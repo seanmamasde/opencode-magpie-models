@@ -9,15 +9,17 @@ reasoning levels (low … max, as OpenCode variants). The list is read when Open
 every hour. If Magpie can't be reached, the last list saved in
 `$XDG_CACHE_HOME/opencode-magpie-models/<id>.json` is used.
 
-## Use
+## Install
 
-In `opencode.jsonc` (remove any hand-written provider with the same id):
+The plugin is on npm as [`opencode-magpie-models`](https://www.npmjs.com/package/opencode-magpie-models);
+OpenCode downloads it from the registry itself, so there is nothing to install by hand. Add it to
+`opencode.jsonc` (and remove any hand-written provider with the same id):
 
 ```jsonc
 {
   "plugins": [
     {
-      "package": "opencode-magpie-models",
+      "package": "opencode-magpie-models@0.1.1",
       "options": {
         "baseURL": "https://magpie.example.com/v1",
         "keyFile": "~/.secrets/magpie-key", // file holding a Magpie gateway key
@@ -28,15 +30,19 @@ In `opencode.jsonc` (remove any hand-written provider with the same id):
 }
 ```
 
-Then restart OpenCode's background service (`opencode service restart`). Models appear as
+OpenCode picks up the change by itself (or run `opencode service restart`). Models appear as
 `magpie/<provider>/<model>`, e.g. `magpie/claude/claude-sonnet-5-5#high`.
 
-From a local checkout, use the folder's absolute path as `package`. OpenCode loads the folder's root
-`index.ts`.
+Pin the version as above: OpenCode keeps the first copy it downloads for an unpinned name, so a new
+release reaches it only when the pinned version changes. To update, set the new version from the
+[releases](https://github.com/seanmamasde/opencode-magpie-models/releases).
 
 Tested with OpenCode 2.1.2.
 
 ## Develop
+
+To run a local checkout instead, use the folder's absolute path as `package`. OpenCode loads the
+folder's root `index.ts`.
 
 ```sh
 npm install
