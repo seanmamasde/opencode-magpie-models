@@ -22,7 +22,8 @@ export function toModels(providerID: string, raws: readonly Raw[]): Model.Info[]
   const pid = Provider.ID.make(providerID)
   return raws.map((raw) => {
     const base = Model.Info.default(pid, Model.ID.make(raw.id))
-    const levels = raw.reasoning && strings(raw.reasoning_levels) ? raw.reasoning_levels : []
+    // some vendors list them upper-case (Zed's Gemini: LOW); Magpie reads any case
+    const levels = raw.reasoning && strings(raw.reasoning_levels) ? [...new Set(raw.reasoning_levels.map((l) => l.toLowerCase()))] : []
     return {
       ...base,
       name: raw.magpie_label ?? raw.display_name ?? raw.id,

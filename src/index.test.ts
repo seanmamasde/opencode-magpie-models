@@ -27,6 +27,11 @@ test("missing metadata: text only, no variants, default limits", () => {
   expect(m.limit.context).toBe(200_000)
 })
 
+test("reasoning levels are lower-cased", () => {
+  const [m] = toModels("magpie", [{ id: "zed/gemini", reasoning: true, reasoning_levels: ["LOW", "HIGH"] }])
+  expect(m.variants.map((v) => v.id)).toEqual(["low", "high"] as any)
+})
+
 test("rejects a response without a data array and drops entries without an id", () => {
   expect(() => parseList({ error: "nope" })).toThrow()
   expect(parseList({ data: [{ id: "a" }, { id: 3 }, null] }).map((m) => m.id)).toEqual(["a"])
